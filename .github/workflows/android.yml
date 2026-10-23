@@ -6,8 +6,13 @@ on:
   pull_request:
 permissions:
   contents: read
+concurrency:
+  group: android-${{ github.ref }}
+  cancel-in-progress: false
 jobs:
   android:
+    permissions:
+      contents: write
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -29,3 +34,19 @@ jobs:
           name: debate-em-contexto-apk-teste
           path: app/build/outputs/apk/debug/app-debug.apk
           if-no-files-found: error
+      - name: Preparar APK para download direto
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+        run: cp app/build/outputs/apk/debug/app-debug.apk Fullfact-IA.apk
+      - name: Publicar versão para baixar no celular
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: apk-${{ github.run_number }}
+          name: Fullfact-IA — teste ${{ github.run_number }}
+          body: |
+            Baixe o arquivo Fullfact-IA.apk abaixo e abra no celular Android.
+            Versão experimental: câmera, monitoramento de volume e cadastro manual.
+            Reconhecimento de participantes e checagem de fatos ainda não implementados.
+          files: Fullfact-IA.apk
+          fail_on_unmatched_files: true
+          make_latest: true
