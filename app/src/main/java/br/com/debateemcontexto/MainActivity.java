@@ -422,9 +422,19 @@ public class MainActivity extends ComponentActivity {
                 String title=source.optString("title"),url=source.optString("url");
                 fullButton(box,button(title+" ↗",false,()->{try{if(url.startsWith("https://"))startActivity(new android.content.Intent(android.content.Intent.ACTION_VIEW,android.net.Uri.parse(url)));}catch(Exception error){Toast.makeText(this,"Não foi possível abrir a fonte.",Toast.LENGTH_SHORT).show();}}));gap(box,8);
             }
+            String suggestions=result.optString("searchSuggestions");
+            if(!suggestions.isEmpty()){
+                gap(box,12);box.addView(text("Pesquisa Google",12,MUTED,true));gap(box,8);
+                android.webkit.WebView searchView=new android.webkit.WebView(this);
+                searchView.getSettings().setJavaScriptEnabled(false);searchView.getSettings().setAllowFileAccess(false);searchView.getSettings().setAllowContentAccess(false);searchView.getSettings().setBlockNetworkLoads(true);
+                searchView.setWebViewClient(new android.webkit.WebViewClient(){@Override public boolean shouldOverrideUrlLoading(android.webkit.WebView view,android.webkit.WebResourceRequest request){String link=request.getUrl().toString();try{if(link.startsWith("https://"))startActivity(new android.content.Intent(android.content.Intent.ACTION_VIEW,request.getUrl()));}catch(Exception ignored){}return true;}});
+                box.addView(searchView,new LinearLayout.LayoutParams(-1,dp(160)));searchView.loadDataWithBaseURL("https://www.google.com",suggestions,"text/html","UTF-8",null);
+            }
+            JSONObject crossed=result.optJSONObject("crossCheck");if(crossed!=null){gap(box,8);paragraph(box,"Origens distintas na pesquisa: "+crossed.optInt("independentOrigins"));}
             gap(box,8);paragraph(box,"Checagem automatizada · "+result.optString("checkedAt").replace("T"," ").replace("Z"," UTC"));
             if(result.has("startSeconds")){gap(box,8);paragraph(box,"Trecho do vídeo a partir de "+clock(result.optInt("startSeconds")));}
         }
     }
 
 }
+
