@@ -12,7 +12,7 @@ test('links inseguros nunca viram fontes clicáveis',()=>{
 });
 test('mantém fonte HTTPS sustentada pelo grounding',()=>{
  const result=groundedResult({candidates:[{content:{parts:[{text:'CLASSIFICAÇÃO: Falso\nO dado não corresponde ao período.'}]},groundingMetadata:{groundingChunks:[{web:{uri:'https://ibge.gov.br/dado',title:'IBGE'}}],groundingSupports:[{groundingChunkIndices:[0]}]}}]},'Exemplo');
- assert.equal(result.verdict,'Falso');assert.equal(result.sources[0].title,'IBGE');
+ assert.equal(result.verdict,'Evidência insuficiente');assert.equal(result.sources[0].title,'IBGE');
 });
 test('áudio incompreensível não dispara pesquisa nem veredito',async()=>{
  let calls=0;const result=await analyze('test',{audioBase64:'test'},async()=>{calls++;return {ok:true,json:async()=>({candidates:[{content:{parts:[{text:JSON.stringify({transcript:'',quality:'inaudible',claims:['Inventado']})}]}}]})}});
@@ -25,3 +25,9 @@ test('afirmações inventadas fora da transcrição são descartadas',async()=>{
 test('limite do provedor vira orientação compreensível',async()=>{
  await assert.rejects(generate('test',{},async()=>({ok:false,status:429})),e=>e.status===429&&e.code==='provider_limit');
 });
+
+test('classificação definitiva exige duas origens vinculadas',()=>{
+const result=groundedResult({candidates:[{content:{parts:[{text:'CLASSIFICAÇÃO: Verdadeiro\nDados cruzados.'}]},groundingMetadata:{groundingChunks:[{web:{uri:'https://ibge.gov.br/dado',title:'IBGE'}},{web:{uri:'https://reuters.com/noticia',title:'Reuters'}}],groundingSupports:[{groundingChunkIndices:[0,1]}]}}]},'Exemplo');
+assert.equal(result.verdict,'Verdadeiro');assert.equal(result.crossCheck.independentOrigins,2);
+});
+
