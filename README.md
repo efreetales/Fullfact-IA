@@ -25,13 +25,23 @@ O aplicativo não envia dados para serviços externos.
 7. Resultados com trecho literal, autor confirmado ou incerto, horário, fontes, data, justificativa e estado: Em checagem, Verdadeiro, Falso, Enganoso, Fora de contexto ou Evidência insuficiente. Nunca preencher resultados fictícios.
 8. Serviço seguro de transcrição e pesquisa, com credenciais fora do APK. Definir custos, retenção de mídia e consentimento antes de enviar gravações.
 
-## Como gerar um APK quando o projeto estiver no GitHub
+## Baixar a versão mais recente
+
+[**Baixar Fullfact-IA.apk**](https://github.com/efreetales/Fullfact-IA/releases/latest/download/Fullfact-IA.apk)
+
+O link acima sempre aponta para o APK da última versão publicada. Você também pode abrir [Releases](https://github.com/efreetales/Fullfact-IA/releases/latest) e tocar em **Fullfact-IA.apk** na área **Assets**. Não é necessário baixar ou descompactar um ZIP.
+
+Abra o APK no celular Android. Se o sistema solicitar, autorize a instalação por esse aplicativo. Esta é uma versão de teste, ainda sem checagem automática de fatos.
+
+## Gerar uma nova versão
 
 1. Abra o repositório no GitHub e clique em **Actions**.
 2. Abra **Gerar APK de teste** e clique em **Run workflow**.
-3. Aguarde a execução ficar verde. Se falhar, o APK ainda não está disponível.
-4. Abra a execução e baixe **debate-em-contexto-apk-teste**, na área **Artifacts**.
-5. Descompacte o arquivo baixado. O aplicativo de teste será o arquivo **app-debug.apk**.
+3. Selecione **main**, confirme e aguarde a execução ficar verde.
+4. Abra **Releases** e baixe **Fullfact-IA.apk**. O link de versão mais recente também será atualizado automaticamente.
+5. Se uma compilação falhar, a versão anterior permanece disponível. Arquivos ZIP na aba Actions são uma alternativa de download.
+
+As publicações acontecem após testes e análise do código, em alterações da branch main ou execução manual nessa branch. Propostas de alteração são testadas sem publicar uma versão.
 
 É uma versão de teste, não uma versão pronta para loja. A configuração usa Java 17, Gradle 8.11.1, Android Gradle Plugin 8.9.2 e SDK 35.
 Repositório: https://github.com/efreetales/Fullfact-IA. Não há assinatura de publicação configurada.
