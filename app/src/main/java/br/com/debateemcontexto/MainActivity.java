@@ -356,18 +356,11 @@ public class MainActivity extends ComponentActivity {
         EditText time=field(interval,"Começar em · minutos:segundos","10:18",12);time.setText(clock(youtubeStart));
         time.addTextChangedListener(watch(value->{try{youtubeStart=parseTime(value);}catch(Exception ignored){}}));gap(interval,12);
         paragraph(interval,"O áudio e as imagens do trecho serão lidos pelo Gemini a partir do link. Não há captação do microfone neste modo.");
-        gap(body,18);player=new android.webkit.WebView(this);player.setBackgroundColor(INK);
-        player.getSettings().setJavaScriptEnabled(true);player.getSettings().setDomStorageEnabled(true);
-        player.getSettings().setAllowFileAccess(false);player.getSettings().setAllowContentAccess(false);
-        player.getSettings().setMixedContentMode(android.webkit.WebSettings.MIXED_CONTENT_NEVER_ALLOW);
-        player.setWebChromeClient(new android.webkit.WebChromeClient());
-        player.setWebViewClient(new android.webkit.WebViewClient(){
-            @Override public boolean shouldOverrideUrlLoading(android.webkit.WebView view,android.webkit.WebResourceRequest request){
-                String host=request.getUrl().getHost();return host==null||!(host.equals("youtube.com")||host.endsWith(".youtube.com")||host.equals("youtu.be"));
-            }
-        });
-        body.addView(player,new LinearLayout.LayoutParams(-1,dp(250)));
-        try{String url=canonicalYoutube(youtubeUrl);player.loadUrl(url+"&t="+youtubeStart+"s");}catch(Exception error){player.loadData("<p style='color:white'>Informe um link público na etapa Preparar.</p>","text/html","UTF-8");}
+        gap(body,18); FrameLayout videoFrame=new FrameLayout(this); videoFrame.setBackground(shape(INK,18,0)); videoFrame.setClipToOutline(true);
+        LinearLayout intro=column();intro.setGravity(Gravity.CENTER);intro.setPadding(dp(18),dp(18),dp(18),dp(18));
+        TextView previewTitle=text("Seu debate no YouTube",19,Color.WHITE,true);previewTitle.setGravity(Gravity.CENTER);intro.addView(previewTitle);gap(intro,18);
+        intro.addView(button("Carregar vídeo para assistir",false,()->{try{loadYoutubePlayer(videoFrame);}catch(Exception error){Toast.makeText(this,"Não foi possível carregar. Use Abrir vídeo no YouTube.",Toast.LENGTH_LONG).show();}}));
+        videoFrame.addView(intro,new FrameLayout.LayoutParams(-1,-1));body.addView(videoFrame,new LinearLayout.LayoutParams(-1,dp(230)));
         gap(body,16);fullButton(body,button("Analisar 25 segundos deste ponto",true,()->{
             try{youtubeStart=parseTime(time.getText().toString());}catch(Exception error){time.setError("Use minutos:segundos, como 10:18");return;}
             analyzeYoutube();time.setText(clock(youtubeStart));
@@ -379,6 +372,21 @@ public class MainActivity extends ComponentActivity {
             if(checked){if(!analysis.settings.ready()){automatic.setChecked(false);Toast.makeText(this,"Ative a conexão na etapa Preparar.",Toast.LENGTH_LONG).show();return;}uiHandler.post(nextYoutubeClip);}
         });
         addAnalysisPanel();
+    }
+    @android.annotation.SuppressLint("SetJavaScriptEnabled")
+    private void loadYoutubePlayer(FrameLayout frame) {
+        player=new android.webkit.WebView(this);player.setBackgroundColor(INK);
+        player.getSettings().setJavaScriptEnabled(true);player.getSettings().setDomStorageEnabled(true);
+        player.getSettings().setAllowFileAccess(false);player.getSettings().setAllowContentAccess(false);
+        player.getSettings().setMixedContentMode(android.webkit.WebSettings.MIXED_CONTENT_NEVER_ALLOW);
+        player.setWebChromeClient(new android.webkit.WebChromeClient());
+        player.setWebViewClient(new android.webkit.WebViewClient(){
+            @Override public boolean shouldOverrideUrlLoading(android.webkit.WebView view,android.webkit.WebResourceRequest request){
+                String host=request.getUrl().getHost();return host==null||!(host.equals("youtube.com")||host.endsWith(".youtube.com")||host.equals("youtu.be"));
+            }
+        });
+        frame.removeAllViews(); frame.addView(player,new FrameLayout.LayoutParams(-1,-1));
+        try{String url=canonicalYoutube(youtubeUrl);player.loadUrl(url+"&t="+youtubeStart+"s");}catch(Exception error){player.loadData("<p style='color:white'>Informe um link público na etapa Preparar.</p>","text/html","UTF-8");}
     }
     private void analyzeYoutube() {
         if(analysis.busy.get()){Toast.makeText(this,"Aguarde a análise do trecho anterior.",Toast.LENGTH_SHORT).show();return;}
