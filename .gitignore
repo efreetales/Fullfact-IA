@@ -5,3 +5,6 @@ local.properties
 *.keystore
 .idea/
 *.iml
+
+.env*
+tools/gemini-setup/*.log

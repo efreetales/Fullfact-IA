@@ -3,12 +3,14 @@ plugins { id 'com.android.application' }
 android {
     namespace 'br.com.debateemcontexto'
     compileSdk 35
+    buildFeatures { buildConfig true }
     defaultConfig {
         applicationId 'br.com.debateemcontexto'
         minSdk 28
         targetSdk 35
-        versionCode 1
-        versionName '0.1.0'
+        versionCode 3
+        versionName '0.3.0'
+        buildConfigField 'String', 'BACKEND_URL', '"https://mheprhibuknmnnbcisxa.supabase.co/functions/v1/fullfact"'
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17

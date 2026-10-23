@@ -1,65 +1,53 @@
-# Fullfact-IA — Debate em Contexto
+# Fullfact-IA
 
-Base Android experimental para acompanhar debates pela câmera e pelo microfone.
+Aplicativo Android experimental para testar transcrição e checagem automatizada de debates com fontes.
 
-## Estado real desta entrega
+[**Baixar o APK mais recente**](https://github.com/efreetales/Fullfact-IA/releases/latest/download/Fullfact-IA.apk)
 
-- Código para visualização ao vivo da câmera traseira, com CameraX.
-- Monitoramento local do nível do microfone: alerta após 3 segundos de sinal baixo e alerta de saturação.
-- Cadastro manual persistente de nome e contexto dos participantes, com opção de apagar.
-- Interrupção da câmera e do microfone ao sair do aplicativo.
-- Fluxo de GitHub Actions configurado para testes, análise Android e geração de APK de depuração.
+## Testar no celular
 
-Consulte o resultado dos testes e a disponibilidade do APK na aba Actions. Teste em aparelho real ainda pendente.
-O vídeo é uma visualização ao vivo; não é gravado ou analisado. O áudio é usado apenas para medir o sinal e é descartado.
-O aplicativo não envia dados para serviços externos.
+1. Instale o APK mais recente e abra **Preparar**.
+2. Cole seu código de ativação pessoal do Fullfact-IA e toque em **Ativar e verificar conexão**. Não é a chave do Gemini. O código fica protegido pelo Android Keystore.
+3. Escolha **Vídeo público do YouTube**, informe o link e o horário inicial. O vídeo de referência do teste já vem preenchido em 10:18.
+4. Toque em **Continuar para acompanhamento** e em **Analisar 25 segundos deste ponto**.
+5. Confira a transcrição e o andamento. Abra **Checagens** para ver afirmações selecionadas, explicação e fontes clicáveis. Alguns trechos contêm apenas opiniões, promessas ou frases incompletas e não geram checagens.
+6. Opcionalmente, ative a análise dos próximos trechos em sequência. O processamento segue o horário escolhido, não os comandos de pausa e busca do player. Ao sair da tela ou do aplicativo, o avanço automático para.
 
-## O que falta para o produto proposto
+## Captar a TV
 
-1. Transcrição contínua com timestamps e detecção de fala, ruído, sobreposição e compreensão insuficiente. Volume alto não comprova inteligibilidade. Os limites atuais são provisórios e precisam de calibração em aparelhos e ambientes reais.
-2. Setup multimodal: nome, contexto confirmado, foto de referência e amostra de voz com associação manual. Confirmar a qualidade da amostra antes de salvar. Oferecer edição e exclusão.
-3. Identificação de turnos de fala. Não atribuir a voz ao rosto visível automaticamente: uma transmissão pode mostrar alguém enquanto outro fala. Havendo dúvida, mostrar “Participante não identificado” e permitir correção.
-4. Captura de tela e áudio de outros aplicativos via autorização explícita do Android e serviço de captura em primeiro plano. Respeitar conteúdo protegido e bloqueios de áudio. Não presumir suporte universal a YouTube ou streaming.
-5. Pesquisa de contexto dos participantes com fontes e data; separar informações informadas pelo usuário de informações verificadas.
-6. Extração de afirmações factuais; busca de checagens existentes; pesquisa em fontes originais; comparação de período, território e indicador.
-7. Resultados com trecho literal, autor confirmado ou incerto, horário, fontes, data, justificativa e estado: Em checagem, Verdadeiro, Falso, Enganoso, Fora de contexto ou Evidência insuficiente. Nunca preencher resultados fictícios.
-8. Serviço seguro de transcrição e pesquisa, com credenciais fora do APK. Definir custos, retenção de mídia e consentimento antes de enviar gravações.
+Escolha câmera + microfone ou somente áudio. Após o aviso e sua autorização, o app coleta trechos de aproximadamente 20 segundos com pequena sobreposição e envia ao serviço para análise. No modo câmera, uma imagem reduzida da transmissão é enviada junto como contexto visual.
 
-## Baixar a versão mais recente
+Volume baixo, distorção e fala pouco compreensível recebem orientações distintas. Enquanto o serviço está ocupado, novos intervalos podem não ser enviados; o app informa esse caso. Ao sair da tela de acompanhamento, a captação para. O trecho parcial final, menor que uma janela completa, não é enviado.
 
-[**Baixar Fullfact-IA.apk**](https://github.com/efreetales/Fullfact-IA/releases/latest/download/Fullfact-IA.apk)
+## O que esta versão faz
 
-O link acima sempre aponta para o APK da última versão publicada. Você também pode abrir [Releases](https://github.com/efreetales/Fullfact-IA/releases/latest) e tocar em **Fullfact-IA.apk** na área **Assets**. Não é necessário baixar ou descompactar um ZIP.
+- Interface Android com tema claro, cartões, campos e navegação em três etapas.
+- Leitura de áudio e imagem de trechos de vídeo público do YouTube pelo Gemini, com horário definido.
+- Captação real da câmera e do microfone para uma TV ou segundo dispositivo.
+- Transcrição e seleção de até duas afirmações factuais completas por trecho.
+- Pesquisa com Google Search e resultados com explicação, fontes vinculadas e data da checagem.
+- Bloqueio de classificação definitiva quando faltam evidências vinculadas à resposta.
+- Cadastro manual dos nomes e contexto; campo de data do debate.
+- Análise de uma fala colada em texto para revisar transcrição ou testar uma afirmação.
 
-Abra o APK no celular Android. Se o sistema solicitar, autorize a instalação por esse aplicativo. Esta é uma versão de teste, ainda sem checagem automática de fatos.
+## Limitações de teste
 
-## Gerar uma nova versão
+- Não há reconhecimento biométrico de rosto ou voz nem identificação automática confiável dos participantes. A autoria permanece não identificada quando não confirmada.
+- Não há captura da tela de outros aplicativos, de streamings protegidos ou suporte garantido a transmissões ao vivo. O modo YouTube usa a leitura do vídeo público pelo link.
+- A pesquisa e a transcrição são automatizadas e podem conter erros. A conclusão precisa ser conferida com as fontes; o app não determina intenção ou mentira deliberada.
+- Um teste com Gemini e fontes reais valida o fluxo, não comprova a precisão em todos os debates.
+- O acesso pessoal tem limite diário de requisições e prazo de validade. Pedidos sem código são bloqueados.
+- A chave do Gemini fica no cofre do serviço Supabase e não é incluída no APK ou no repositório.
+- Não armazenamos áudio, imagens ou transcrições no banco Fullfact-IA. O provedor de IA aplica suas próprias condições de retenção e uso dos dados.
 
-1. Abra o repositório no GitHub e clique em **Actions**.
-2. Abra **Gerar APK de teste** e clique em **Run workflow**.
-3. Selecione **main**, confirme e aguarde a execução ficar verde.
-4. Abra **Releases** e baixe **Fullfact-IA.apk**. O link de versão mais recente também será atualizado automaticamente.
-5. Se uma compilação falhar, a versão anterior permanece disponível. Arquivos ZIP na aba Actions são uma alternativa de download.
+## Gerar e baixar novas versões
 
-As publicações acontecem após testes e análise do código, em alterações da branch main ou execução manual nessa branch. Propostas de alteração são testadas sem publicar uma versão.
+Em **Actions**, abra **Gerar APK de teste**, toque em **Run workflow**, selecione **main** e confirme. A publicação em **Releases** só acontece se testes, análise do código e conferência de navegação no Android emulado passarem. O link de download acima é atualizado após cada publicação bem-sucedida.
 
-É uma versão de teste, não uma versão pronta para loja. A configuração usa Java 17, Gradle 8.11.1, Android Gradle Plugin 8.9.2 e SDK 35.
-Repositório: https://github.com/efreetales/Fullfact-IA. Não há assinatura de publicação configurada.
+A compilação usa Java 17, Gradle 8.11.1, AGP 8.9.2 e SDK 35. A versão mínima é Android 9. A assinatura de teste é mantida em cache para as novas compilações; esta não é uma assinatura de publicação na loja.
 
-## Verificação em um Android real
+## Serviço
 
-- Permitir câmera e microfone e conferir a imagem da TV.
-- Negar permissões e conferir a orientação exibida.
-- Manter silêncio por mais de 3 segundos e conferir o aviso; retomar o áudio e conferir a recuperação.
-- Conferir o modo somente microfone sem pedir câmera.
-- Sair do aplicativo e conferir que os indicadores de câmera e microfone se apagam.
-- Trocar rapidamente entre os modos e verificar se o microfone continua funcionando.
-- Cadastrar participantes, fechar e reabrir; conferir a persistência; apagar e conferir a exclusão.
-- Validar rotação, tamanho de texto e aparelhos com câmeras diferentes.
+Código em `supabase/functions/fullfact`. As rotas exigem um código pessoal e impõem limite de uso no servidor. O serviço usa Gemini 3.5 Flash-Lite com pesquisa Google Search. A chave é acessada por uma função restrita ao servidor. Nenhuma chave real deve ser adicionada ao código, arquivos de configuração ou variáveis de compilação do APK.
 
-## Fontes técnicas
-
-- CameraX: https://developer.android.com/media/camera/camerax
-- AudioRecord: https://developer.android.com/reference/android/media/AudioRecord
-- Captura de áudio de outros aplicativos: https://developer.android.com/media/platform/av-capture
-- Compartilhamento de tela: https://developer.android.com/media/grow/media-projection
+Testes do processamento: `node --test supabase/tests/engine.test.mjs`.
